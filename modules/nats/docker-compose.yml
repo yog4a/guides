@@ -1,0 +1,73 @@
+services:
+  nats-1:
+    image: nats:latest
+    container_name: nats-1
+    hostname: nats-1
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    volumes:
+      - ./nats-server.conf:/etc/nats/nats-server.conf
+      - nats-1-data:/data/jetstream
+    command: "-c /etc/nats/nats-server.conf --name nats-1 -js"
+    networks:
+      - nats-cluster
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8222/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  nats-2:
+    image: nats:latest
+    container_name: nats-2
+    hostname: nats-2
+    ports:
+      - "4223:4222"
+      - "8223:8222"
+    volumes:
+      - ./nats-server.conf:/etc/nats/nats-server.conf
+      - nats-2-data:/data/jetstream
+    command: "-c /etc/nats/nats-server.conf --name nats-2 -js"
+    networks:
+      - nats-cluster
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8222/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      - nats-1
+
+  nats-3:
+    image: nats:latest
+    container_name: nats-3
+    hostname: nats-3
+    ports:
+      - "4224:4222"
+      - "8224:8222"
+    volumes:
+      - ./nats-server.conf:/etc/nats/nats-server.conf
+      - nats-3-data:/data/jetstream
+    command: "-c /etc/nats/nats-server.conf --name nats-3 -js"
+    networks:
+      - nats-cluster
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8222/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      - nats-1
+
+volumes:
+  nats-1-data:
+  nats-2-data:
+  nats-3-data:
+
+networks:
+  nats-cluster:
+    driver: bridge
