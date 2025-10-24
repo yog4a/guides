@@ -34,38 +34,51 @@ Create custom filters to detect specific attack patterns. Copy content from the 
 
 ```bash
 # Filter for wrong username attempts
+sudo rm -f "/etc/fail2ban/filter.d/sshd-wrongUser.conf"
 sudo nano "/etc/fail2ban/filter.d/sshd-wrongUser.conf"
 # Copy content from filter.d/sshd-wrongUser.conf
 ```
 
 ```bash
 # Filter for root user login attempts
+sudo rm -f "/etc/fail2ban/filter.d/sshd-rootUser.conf"
 sudo nano "/etc/fail2ban/filter.d/sshd-rootUser.conf"
 # Copy content from filter.d/sshd-rootUser.conf
+```
+
+```bash
+# Filter for invalid protocol attempts
+sudo rm -f "/etc/fail2ban/filter.d/sshd-invalidProtocol.conf"
+sudo nano "/etc/fail2ban/filter.d/sshd-invalidProtocol.conf"
+# Copy content from filter.d/sshd-invalidProtocol.conf
 ```
 
 ### UFW Filters
 
 ```bash
 # Filter for connections to wrong ports
+sudo rm -f "/etc/fail2ban/filter.d/ufw-wrongPort.conf"
 sudo nano "/etc/fail2ban/filter.d/ufw-wrongPort.conf"
 # Copy content from filter.d/ufw-wrongPort.conf
 ```
 
 ```bash
 # Filter for port scanning attempts
+sudo rm -f "/etc/fail2ban/filter.d/ufw-portScan.conf"
 sudo nano "/etc/fail2ban/filter.d/ufw-portScan.conf"
 # Copy content from filter.d/ufw-portScan.conf
 ```
 
 ```bash
 # Filter for SYN flood attacks
+sudo rm -f "/etc/fail2ban/filter.d/ufw-synFlood.conf"
 sudo nano "/etc/fail2ban/filter.d/ufw-synFlood.conf"
 # Copy content from filter.d/ufw-synFlood.conf
 ```
 
 ```bash
 # Filter for UDP flood attacks
+sudo rm -f "/etc/fail2ban/filter.d/ufw-udpFlood.conf"
 sudo nano "/etc/fail2ban/filter.d/ufw-udpFlood.conf"
 # Copy content from filter.d/ufw-udpFlood.conf
 ```
@@ -81,6 +94,7 @@ Verify that filters work correctly before enabling them:
 ```bash
 sudo fail2ban-regex /var/log/auth.log /etc/fail2ban/filter.d/sshd-wrongUser.conf
 sudo fail2ban-regex /var/log/auth.log /etc/fail2ban/filter.d/sshd-rootUser.conf
+sudo fail2ban-regex /var/log/auth.log /etc/fail2ban/filter.d/sshd-invalidProtocol.conf
 ```
 
 ### Test UFW Filters
